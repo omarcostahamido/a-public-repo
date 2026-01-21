@@ -22,7 +22,9 @@ jobs:
 
           # 2. Add the public repo as a remote using the Secret Token
           # REPLACE 'YOUR_USERNAME' AND 'YOUR_PUBLIC_REPO_NAME' BELOW!
-          git remote add public https://oauth2:${{ secrets.API_TOKEN_GITHUB }}@github.com/omarcostahamido/a-public-repo.git
+          # git remote add public https://oauth2:${{ secrets.API_TOKEN_GITHUB }}@github.com/omarcostahamido/a-public-repo.git
+          # Use the token directly. Note the empty password (the colon at the end) is optional but good practice.
+          git remote add public https://${{ secrets.API_TOKEN_GITHUB }}@github.com/omarcostahamido/a-public-repo.git
 
           # 3. Push the main branch to the public remote
           git push public main
