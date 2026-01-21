@@ -1,0 +1,28 @@
+name: Sync to Public Repo
+
+on:
+  push:
+    branches:
+      - main  # Trigger only when 'main' is updated
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Private Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history for all branches and tags
+
+      - name: Push to Public Repo
+        run: |
+          # 1. Configure git to identify as the automation bot
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+          # 2. Add the public repo as a remote using the Secret Token
+          # REPLACE 'YOUR_USERNAME' AND 'YOUR_PUBLIC_REPO_NAME' BELOW!
+          git remote add public https://oauth2:${{ secrets.API_TOKEN_GITHUB }}@github.com/omarcostahamido/a-public-repo.git
+
+          # 3. Push the main branch to the public remote
+          git push public main
