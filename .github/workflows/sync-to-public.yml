@@ -3,7 +3,7 @@ name: Sync to Public Repo
 on:
   push:
     branches:
-      - main  # Trigger only when 'main' is updated
+      - main
 
 jobs:
   sync:
@@ -12,19 +12,18 @@ jobs:
       - name: Checkout Private Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches all history for all branches and tags
+          fetch-depth: 0
+          persist-credentials: false  # <--- THIS IS THE KEY FIX. It logs out the "Bot".
 
       - name: Push to Public Repo
         run: |
-          # 1. Configure git to identify as the automation bot
+          # 1. Configure git user
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
 
-          # 2. Add the public repo as a remote using the Secret Token
-          # REPLACE 'YOUR_USERNAME' AND 'YOUR_PUBLIC_REPO_NAME' BELOW!
-          # git remote add public https://oauth2:${{ secrets.API_TOKEN_GITHUB }}@github.com/omarcostahamido/a-public-repo.git
-          # Use the token directly. Note the empty password (the colon at the end) is optional but good practice.
-          git remote add public https://${{ secrets.API_TOKEN_GITHUB }}@github.com/omarcostahamido/a-public-repo.git
+          # 2. Add remote using "x-access-token" as the username
+          # This syntax forces Git to use the token as a password credential
+          git remote add public https://x-access-token:${{ secrets.API_TOKEN_GITHUB }}@github.com/omarcostahamido/a-public-repo.git
 
-          # 3. Push the main branch to the public remote
+          # 3. Push
           git push public main
