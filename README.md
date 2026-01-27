@@ -15,3 +15,7 @@ this is a seventh commit done in provate!
 here is a new line to trigger the action script!.
 
 (we need to edit this readme to actually show the step by step guide on how to set this up!)
+
+what happens when a PR contains more than one committer...
+
+editing on mobile
